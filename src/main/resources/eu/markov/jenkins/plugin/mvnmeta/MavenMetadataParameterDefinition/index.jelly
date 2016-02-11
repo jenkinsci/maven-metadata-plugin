@@ -31,6 +31,7 @@
       <input type="hidden" name="groupId" value="${it.groupId}"/>
       <input type="hidden" name="artifactId" value="${it.artifactId}"/>
       <input type="hidden" name="packaging" value="${it.packaging}"/>
+      <input type="hidden" name="classifier" value="${it.classifier}"/>
       <j:choose>
         <j:when test="${it.versions.size() == null or it.versions.size() == 0}">
           <!-- no tags at all -->

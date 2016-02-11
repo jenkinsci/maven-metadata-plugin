@@ -92,6 +92,7 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
   private final String         groupId;
   private final String         artifactId;
   private final String         packaging;
+  private final String         classifier;
   private final String         defaultValue;
   private final String         versionFilter;
   private final SortOrder      sortOrder;
@@ -104,13 +105,14 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
 
   @DataBoundConstructor
   public MavenMetadataParameterDefinition(String name, String description, String repoBaseUrl, String groupId,
-      String artifactId, String packaging, String versionFilter, String sortOrder, String defaultValue, String maxVersions,
+      String artifactId, String packaging, String classifier, String versionFilter, String sortOrder, String defaultValue, String maxVersions,
       String currentArtifactInfoUrl, String currentArtifactInfoLabel, String currentArtifactInfoPattern, String credentialsId) {
     super(name, description);
     this.repoBaseUrl = Util.removeTrailingSlash(repoBaseUrl);
     this.groupId = groupId;
     this.artifactId = artifactId;
     this.packaging = packaging;
+    this.classifier = classifier;
     this.versionFilter = StringUtils.trim(versionFilter);
     this.sortOrder = SortOrder.valueOf(sortOrder);
     this.defaultValue = StringUtils.trim(defaultValue);
@@ -151,9 +153,17 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
     return "jar";
   }
 
+  public String getClassifier() {
+      if (StringUtils.isNotBlank(this.classifier)) {
+        return this.classifier;
+      }
+      return "";
+    }
+
+  
   private ParameterValue createValue(String version) {
-    return new MavenMetadataParameterValue(getName(), getDescription(), getGroupId(), getArtifactId(), version, getPackaging(),
-        getFullArtifactUrl(getGroupId(), getArtifactId(), version, getPackaging()));
+    return new MavenMetadataParameterValue(getName(), getDescription(), getGroupId(), getArtifactId(), version, getPackaging(), getClassifier(),
+        getFullArtifactUrl(getGroupId(), getArtifactId(), version, getPackaging(), getClassifier()));
   }
 
   // Create a parameter value from the string given in the CLI.
@@ -212,7 +222,7 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
     }
 
     return new MavenMetadataParameterValue(getName(), getDescription(), getGroupId(), getArtifactId(), defaultVersion,
-        getPackaging(), getFullArtifactUrl(getGroupId(), getArtifactId(), defaultVersion, getPackaging()));
+        getPackaging(),getClassifier(), getFullArtifactUrl(getGroupId(), getArtifactId(), defaultVersion, getPackaging(),getClassifier()));
   }
 
   @Override
@@ -343,7 +353,7 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
   }
 
   private String getFullArtifactUrl(MavenMetadataParameterValue value) {
-    return getFullArtifactUrl(value.getGroupId(), value.getArtifactId(), value.getVersion(), value.getPackaging());
+    return getFullArtifactUrl(value.getGroupId(), value.getArtifactId(), value.getVersion(), value.getPackaging(), value.getClassifier());
   }
 
   private String resolveSnapshotRevision(String version) {
@@ -423,7 +433,7 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
    *          the packaging to use for the full url
    * @return the full URL for the given version.
    */
-  private String getFullArtifactUrl(String groupId, String artifactId, String version, String packaging) {
+  private String getFullArtifactUrl(String groupId, String artifactId, String version, String packaging, String classifier) {
     // here we need to be clever if the repository handles multiple versions for a snapshot
     String artifactVersion = version;
     if (version.contains("SNAPSHOT")) {
@@ -433,6 +443,9 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
     StringBuilder versionBuilder = new StringBuilder(getArtifactUrlForPath(version));
     versionBuilder.append("/").append(artifactId);
     versionBuilder.append("-").append(artifactVersion);
+    if (StringUtils.isNotBlank(classifier)) {
+        versionBuilder.append("-").append(classifier);
+    }
     versionBuilder.append(".").append(packaging);
 
     return versionBuilder.toString();

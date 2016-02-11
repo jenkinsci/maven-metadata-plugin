@@ -48,6 +48,7 @@ public class MavenMetadataParameterValue extends ParameterValue {
   public static final String ARTIFACT_ID_SUFFIX = "_ARTIFACT_ID";
   public static final String VERSION_SUFFIX     = "_VERSION";
   public static final String PACKAGING_SUFFIX   = "_PACKAGING";
+  public static final String CLASSIFIER_SUFFIX   = "_CLASSIFIER";
   public static final String ARTIFACT_URL_SUFFIX = "_ARTIFACT_URL";
 
   @Exported
@@ -59,6 +60,8 @@ public class MavenMetadataParameterValue extends ParameterValue {
   @Exported
   private final String       packaging;
   @Exported
+  private final String       classifier;
+  @Exported
   private String             artifactUrl;
 
   /**
@@ -66,12 +69,13 @@ public class MavenMetadataParameterValue extends ParameterValue {
    */
   @DataBoundConstructor
   public MavenMetadataParameterValue(String name, String description, String groupId, String artifactId, String version,
-        String packaging, String artifactUrl) {
+        String packaging, String classifier, String artifactUrl) {
     super(name, description);
     this.groupId = groupId;
     this.artifactId = artifactId;
     this.version = version;
     this.packaging = packaging;
+    this.classifier = classifier;
     this.artifactUrl = artifactUrl;
   }
 
@@ -82,6 +86,7 @@ public class MavenMetadataParameterValue extends ParameterValue {
     env.put(getName() + VERSION_SUFFIX, getVersion());
     env.put(getName() + ARTIFACT_URL_SUFFIX, getArtifactUrl());
     env.put(getName() + PACKAGING_SUFFIX, getPackaging());
+    env.put(getName() + CLASSIFIER_SUFFIX, getClassifier());
   }
 
   @Override
@@ -104,6 +109,9 @@ public class MavenMetadataParameterValue extends ParameterValue {
             }
           if (name.equals(getName() + PACKAGING_SUFFIX)) {
               return getPackaging();
+            }
+          if (name.equals(getName() + CLASSIFIER_SUFFIX)) {
+              return getClassifier();
             }
         }
         return null;

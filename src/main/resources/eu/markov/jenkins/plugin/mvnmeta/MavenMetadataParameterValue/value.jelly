@@ -35,6 +35,9 @@
     <f:entry title="${it.name}${it.PACKAGING_SUFFIX}">
         <f:textbox name="packaging" value="${it.packaging}" readonly="true"  />
     </f:entry>
+    <f:entry title="${it.name}${it.CLASSIFIER_SUFFIX}">
+        <f:textbox name="classifier" value="${it.classifier}" readonly="true"  />
+    </f:entry>
     <f:entry title="${it.name}${it.ARTIFACT_URL_SUFFIX}">
 		<a href="${it.artifactUrl}">${it.artifactUrl}</a>
     </f:entry>

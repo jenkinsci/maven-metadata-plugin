@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+<groupId>com.acme</groupId>
+<artifactId>main</artifactId>
+<version>3.8-SNAPSHOT</version>
+<versioning>
+    <snapshot>
+        <timestamp>20140919.030038</timestamp>
+        <buildNumber>76</buildNumber>
+    </snapshot>
+    <lastUpdated>20140919030038</lastUpdated>
+    <snapshotVersions>
+        <snapshotVersion>
+            <extension>war</extension>
+            <value>3.8-20140919.030038-19</value>
+            <updated>20141125100946</updated>
+        </snapshotVersion>
+        <snapshotVersion>
+            <extension>pom</extension>
+            <value>3.8-20140919.030038-38</value>
+            <updated>20141125100946</updated>
+        </snapshotVersion>
+        <snapshotVersion>
+            <extension>jar</extension>
+            <classifier>classes</classifier>
+            <value>3.8-20140919.030038-76</value>
+            <updated>20141125100946</updated>
+        </snapshotVersion>
+    </snapshotVersions>
+</versioning>
+</metadata>

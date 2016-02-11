@@ -1,0 +1,14 @@
+<metadata modelVersion="1.1.0">
+    <groupId>com.acme</groupId>
+    <artifactId>timestamped</artifactId>
+    <versioning>
+        <latest>3.8-SNAPSHOT</latest>
+        <release>3.7</release>
+        <versions>
+            <version>3.6</version>
+            <version>3.7</version>
+            <version>3.8-SNAPSHOT</version>
+        </versions>
+        <lastUpdated>20141125115634</lastUpdated>
+    </versioning>
+</metadata>
