@@ -117,21 +117,28 @@ public class MavenMetadataParameterDefinitionTest {
 
     @Test
     public void testSingleSnapshot() {
-        MavenMetadataParameterDefinition definition = new MavenMetadataParameterDefinition("variable", "void", getLocalWebServerUrl(), "com.acme", "single", "jar", "", "DESC", "null", "10", "", "", "", null);
+        MavenMetadataParameterDefinition definition = new MavenMetadataParameterDefinition("variable", "void", getLocalWebServerUrl(), "com.acme", "single", "jar","", "", "DESC", "null", "10", "", "", "", null);
         MavenMetadataParameterValue result = (MavenMetadataParameterValue) definition.createValue(null, "3.8-SNAPSHOT");
         assertTrue(result.getArtifactUrl(), result.getArtifactUrl().endsWith("3.8-SNAPSHOT.jar"));
     }
 
     @Test
     public void testTimestampedSnapshot() {
-        MavenMetadataParameterDefinition definition = new MavenMetadataParameterDefinition("variable", "void", getLocalWebServerUrl(), "com.acme", "timestamped", "jar", "", "DESC", "null", "10", "", "", "", null);
+        MavenMetadataParameterDefinition definition = new MavenMetadataParameterDefinition("variable", "void", getLocalWebServerUrl(), "com.acme", "timestamped", "jar","", "", "DESC", "null", "10", "", "", "", null);
         MavenMetadataParameterValue result = (MavenMetadataParameterValue) definition.createValue(null, "3.8-SNAPSHOT");
         assertTrue(result.getArtifactUrl(), result.getArtifactUrl().endsWith("3.8-20140919.030038-76.jar"));
     }
 
     @Test
+    public void testClassifierSnapshot() {
+        MavenMetadataParameterDefinition definition = new MavenMetadataParameterDefinition("variable", "void", getLocalWebServerUrl(), "com.acme", "classifier", "jar","classes", "", "DESC", "null", "10", "", "", "", null);
+        MavenMetadataParameterValue result = (MavenMetadataParameterValue) definition.createValue(null, "3.8-SNAPSHOT");
+        assertTrue(result.getArtifactUrl(), result.getArtifactUrl().endsWith("3.8-20140919.030038-76-classes.jar"));
+    }
+    
+    @Test
     public void testListVersionsSingleSnapshot() {
-        MavenMetadataParameterDefinition definition = new MavenMetadataParameterDefinition("variable", "void", getLocalWebServerUrl(), "com.acme", "timestamped", "jar", "", "ASC", "null", "10", "", "", "", null);
+        MavenMetadataParameterDefinition definition = new MavenMetadataParameterDefinition("variable", "void", getLocalWebServerUrl(), "com.acme", "timestamped", "jar","", "", "ASC", "null", "10", "", "", "", null);
         List<String> versions = definition.getVersions();
         Assert.notEmpty(versions);
         assertEquals("3.6", versions.get(0));
@@ -139,13 +146,24 @@ public class MavenMetadataParameterDefinitionTest {
 
     @Test
     public void testListVersionsTimestampedSnapshot() {
-        MavenMetadataParameterDefinition definition = new MavenMetadataParameterDefinition("variable", "void", getLocalWebServerUrl(), "com.acme", "timestamped", "jar", "", "DESC", "null", "2", "", "", "", null);
+        MavenMetadataParameterDefinition definition = new MavenMetadataParameterDefinition("variable", "void", getLocalWebServerUrl(), "com.acme", "timestamped", "jar","", "", "DESC", "null", "2", "", "", "", null);
         List<String> versions = definition.getVersions();
         Assert.notEmpty(versions);
         assertEquals(2, versions.size());
         assertEquals("3.8-SNAPSHOT", versions.get(0));
     }
 
+    
+    @Test
+    public void testListVersionsClassifierSnapshot() {
+        MavenMetadataParameterDefinition definition = new MavenMetadataParameterDefinition("variable", "void", getLocalWebServerUrl(), "com.acme", "classifier", "jar","classes", "", "DESC", "null", "2", "", "", "", null);
+        List<String> versions = definition.getVersions();
+        Assert.notEmpty(versions);
+        assertEquals(2, versions.size());
+        assertEquals("3.8-SNAPSHOT", versions.get(0));
+    }
+
+    
     @Test
     public void testGetCurrentArtifactInfoPatternWithCapturingGroup() {
         this.executeTestGetCurrentArtifactInfoPattern(CURRENT_ARTIFACT_INFO_URL, "My Label", "Plugin Version: ([\\S]+)", "My Label: 3.14159");
@@ -178,7 +196,7 @@ public class MavenMetadataParameterDefinitionTest {
 
     private void executeTestGetCurrentArtifactInfoPattern(String url, String label, String pattern, String expectedResult) {
         MavenMetadataParameterDefinition definition =
-            new MavenMetadataParameterDefinition("", "", getLocalWebServerUrl(), "", "", "", "", "DESC", "", "", url, label, pattern, null);
+            new MavenMetadataParameterDefinition("", "", getLocalWebServerUrl(), "", "", "","", "", "DESC", "", "", url, label, pattern, null);
         assertEquals(expectedResult, definition.getCurrentArtifactInfo());
     }
 }

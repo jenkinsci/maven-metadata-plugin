@@ -14,6 +14,7 @@
           <artifactId>${project.artifactId}</artifactId>
           <packaging>${project.packaging}</packaging>
           <defaultValue></defaultValue>
+          <classifier></classifier>
           <versionFilter></versionFilter>
           <sortOrder>DESC</sortOrder>
           <maxVersions></maxVersions>
@@ -39,6 +40,7 @@ echo &quot;  Group ID:     ${ARTIFACT_GROUP_ID}&quot;
 echo &quot;  Artifact ID:  ${ARTIFACT_ARTIFACT_ID}&quot;
 echo &quot;  Version:      ${ARTIFACT_VERSION}&quot;
 echo &quot;  Type:         ${ARTIFACT_PACKAGING}&quot;
+echo &quot;  Classifier:   ${ARTIFACT_CLASSIFIER}&quot;
 echo &quot;  Download URL: ${ARTIFACT_ARTIFACT_URL}&quot;
 </command>
     </hudson.tasks.Shell>

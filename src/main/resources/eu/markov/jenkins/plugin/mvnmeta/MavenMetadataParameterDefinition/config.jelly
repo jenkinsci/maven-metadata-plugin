@@ -45,6 +45,9 @@
     <f:entry title="${%Packaging}" field="packaging">
         <f:textbox name="parameter.packaging" value="${instance.packaging}" />
     </f:entry>
+    <f:entry title="${%Classifier}" field="classifier">
+        <f:textbox name="parameter.classifier" value="${instance.classifier}" />
+    </f:entry>
     <f:entry title="${%Versions filter}" field="versionFilter">
         <f:textbox field="parameter.versionFilter" value="${instance.versionFilter}" />
     </f:entry>
