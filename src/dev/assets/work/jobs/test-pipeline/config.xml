@@ -1,0 +1,27 @@
+<flow-definition plugin="workflow-job@2.15">
+ <actions>
+  <io.jenkins.blueocean.service.embedded.BlueOceanUrlAction plugin="blueocean-rest-impl@1.3.5">
+   <blueOceanUrlObject class="io.jenkins.blueocean.service.embedded.BlueOceanUrlObjectImpl">
+    <mappedUrl>blue/organizations/jenkins/Test</mappedUrl>
+    <modelObject class="flow-definition" reference="../../../.."/>
+   </blueOceanUrlObject>
+  </io.jenkins.blueocean.service.embedded.BlueOceanUrlAction>
+  <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.2.5"/>
+  <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.2.5">
+   <jobProperties/>
+   <triggers/>
+   <parameters/>
+  </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+ </actions>
+ <description/>
+ <keepDependencies>false</keepDependencies>
+ <properties/>
+ <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.42">
+  <script>
+pipeline { agent any stages { stage('test'){ steps('test'){ script{ userInput = input(id:'userInput', message: 'Choose jar version ', parameters: [[$class: 'MavenMetadataParameterDefinition', artifactId: 'commons-lang3', classifier:'', credentialsId: '', currentArtifactInfoLabel: '', currentArtifactInfoPattern: '', currentArtifactInfoUrl: '', defaultValue: '', description:'', groupId: 'org.apache.commons', maxVersions: '', name: 'version', packaging: 'jar', repoBaseUrl: 'https://repo1.maven.org/maven2/', sortOrder: 'DESC',versionFilter: '']], submitter:'admin' ,submitterParameter: 'submittedBy'); print("Chosen version : " + userInput) } } } } }
+  </script>
+  <sandbox>true</sandbox>
+ </definition>
+ <triggers/>
+ <disabled>false</disabled>
+</flow-definition>
