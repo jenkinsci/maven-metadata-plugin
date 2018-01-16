@@ -22,6 +22,14 @@
         <url>https://github.com/jenkinsci/maven-metadata-plugin</url>
         <tag>HEAD</tag>
     </scm>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://issues.jenkins-ci.org/issues/?jql=project%20%3D%20JENKINS%20AND%20component%20%3D%20maven-metadata-plugin</url>
+    </issueManagement>
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>https://ci.jenkins.io/blue/organizations/jenkins/Plugins%2Fmaven-metadata-plugin</url>
+    </ciManagement>
 
     <developers>
         <developer>
