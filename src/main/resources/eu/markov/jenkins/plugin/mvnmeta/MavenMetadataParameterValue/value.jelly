@@ -28,7 +28,7 @@
     <f:section name="parameter">
         <input type="hidden" name="name" value="${it.name}" />
         <f:entry title="${it.name}${it.VERSION_SUFFIX}" description="${it.description}">
-            <f:textbox name="version" value="${it.version}" readonly="true" />
+            <f:textbox name="version" value="${it.version}"/>
         </f:entry>
         <f:entry title="${it.name}${it.GROUP_ID_SUFFIX}">
             <f:textbox name="groupId" value="${it.groupId}" readonly="true" />
