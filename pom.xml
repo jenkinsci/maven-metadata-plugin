@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>3.2</version>
+        <version>4.40</version>
     </parent>
 
     <groupId>eu.markov.jenkins.plugin.mvnmeta</groupId>
@@ -96,164 +96,88 @@
     </pluginRepositories>
 
     <properties>
-        <jenkins.version>2.32.1</jenkins.version>
-        <java.level>8</java.level>
-        <maven.compiler.source>1.${java.level}</maven.compiler.source>
-        <maven.compiler.target>1.${java.level}</maven.compiler.target>
-        <lombok.version>1.12.2</lombok.version>
+        <jenkins.version>2.332.3</jenkins.version>
+        <lombok.version>1.18.24</lombok.version>
         <lombok.plugin.version>1.12.2.0</lombok.plugin.version>
         <dev.repoBaseUrl>https://repo.jenkins-ci.org/public</dev.repoBaseUrl>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.jenkins.tools.bom</groupId>
+                <artifactId>bom-2.332.x</artifactId>
+                <version>1370.vfa_e23fe119c3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>credentials</artifactId>
-            <version>2.1.10</version>
         </dependency>
         <dependency>
             <groupId>com.sonyericsson.hudson.plugins.rebuild</groupId>
             <artifactId>rebuild</artifactId>
-            <version>1.25</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>matrix-project</artifactId>
-            <version>1.7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jenkinsci.plugins</groupId>
             <artifactId>pipeline-model-definition</artifactId>
-            <version>1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>pipeline-input-step</artifactId>
-            <version>2.5</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- Satisfy upper bound requirement for transitive test dependencies -->
         <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>script-security</artifactId>
-            <version>1.24</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>scm-api</artifactId>
-            <version>1.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci</groupId>
-            <artifactId>symbol-annotation</artifactId>
-            <version>1.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci</groupId>
-            <artifactId>annotation-indexer</artifactId>
-            <version>1.11</version>
-            <scope>test</scope>
+            <groupId>io.jenkins.plugins</groupId>
+            <artifactId>jaxb</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
+    <build>
+        <sourceDirectory>src/main/lombok</sourceDirectory>
+    </build>
     <profiles>
         <profile>
-            <!-- Automatically create the base configuration for the Jenkins development workspace when it doesn't exist. -->
-            <id>prepare-development-workspace</id>
+            <id>java-9-and-beyond</id>
             <activation>
-                <file>
-                    <missing>${basedir}/work</missing>
-                </file>
+                <jdk>[9,)</jdk>
             </activation>
             <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>workspace-base-configuration</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/src/dev/assets/work</directory>
-                                            <filtering>true</filtering>
-                                        </resource>
-                                    </resources>
-                                    <outputDirectory>${project.basedir}/work</outputDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>for-development</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.projectlombok</groupId>
-                        <artifactId>lombok</artifactId>
-                        <version>${lombok.version}</version>
-                        <scope>provided</scope>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
-
-            <dependencies>
-                <dependency>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>lombok-needs-tools-jar</id>
-            <activation>
-                <file>
-                    <exists>${java.home}/../lib/tools.jar</exists>
-                </file>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.projectlombok</groupId>
-                        <artifactId>lombok-maven-plugin</artifactId>
-                        <version>${lombok.plugin.version}</version>
-                        <dependencies>
-                            <dependency>
-                                <groupId>sun.jdk</groupId>
-                                <artifactId>tools</artifactId>
-                                <version>1.6</version>
-                                <scope>system</scope>
-                                <systemPath>${java.home}/../lib/tools.jar</systemPath>
-                            </dependency>
-                        </dependencies>
-                        <executions>
-                            <execution>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>delombok</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-compiler-plugin</artifactId>
+                            <configuration>
+                                <annotationProcessorPaths>
+                                    <path>
+                                        <groupId>org.projectlombok</groupId>
+                                        <artifactId>lombok</artifactId>
+                                        <version>${lombok.version}</version>
+                                    </path>
+                                </annotationProcessorPaths>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
             </build>
         </profile>
     </profiles>

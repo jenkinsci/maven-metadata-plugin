@@ -294,16 +294,24 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
       URLConnection conn = prepareConnection(url);
 
       input = conn.getInputStream();
-      JAXBContext context = JAXBContext.newInstance(MavenMetadataVersions.class);
-      Unmarshaller unmarshaller = context.createUnmarshaller();
-      MavenMetadataVersions metadata = (MavenMetadataVersions) unmarshaller.unmarshal(input);
 
-      if (sortOrder == SortOrder.DESC) {
-        Collections.reverse(metadata.versioning.versions);
+      Thread currentThread = Thread.currentThread();
+      ClassLoader originalContext = currentThread.getContextClassLoader();
+      try {
+        currentThread.setContextClassLoader(MavenMetadataParameterDefinition.class.getClassLoader());
+        JAXBContext context = JAXBContext.newInstance(MavenMetadataVersions.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        MavenMetadataVersions metadata = (MavenMetadataVersions) unmarshaller.unmarshal(input);
+
+        if (sortOrder == SortOrder.DESC) {
+          Collections.reverse(metadata.versioning.versions);
+        }
+        metadata.versioning.versions = filterVersions(metadata.versioning.versions);
+
+        return metadata;
+      } finally {
+        currentThread.setContextClassLoader(originalContext);
       }
-      metadata.versioning.versions = filterVersions(metadata.versioning.versions);
-
-      return metadata;
     } catch (Exception e) {
       LOGGER.log(Level.WARNING, "Could not parse maven-metadata.xml", e);
       MavenMetadataVersions result = new MavenMetadataVersions();
