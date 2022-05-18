@@ -22,6 +22,16 @@ There are also several options to provide default values which will also be eval
 This plugin does not download anything but rather sets build environment variables describing the artifact and
 where it can be downloaded from.
 
+For example: In your configuration you have created a parameter named `MY_JAR` and have configured all values correctly.
+Then the following parameters will be set for the build step:
+
+- `MY_JAR_VERSION` - the version you selected in the dropdown or that was selected as part of an automated build
+- `MY_JAR_ARTIFACT_URL` - the full URL to the actual artifact selected. You can use something like `wget` to download that artifact and do something with it.
+- `MY_JAR_GROUP_ID` - echoes back your configuration
+- `MY_JAR_ARTIFACT_ID` - echoes back your configuration
+- `MY_JAR_CLASSIFIER` - echoes back your configuration
+- `MY_JAR_PACKAGING` - echoes back your configuration
+
 If all you need to do is download an artifact from a repository and use it during your build you can consider using the
 [Repository Connector Plugin](https://wiki.jenkins.io/display/JENKINS/Repository+Connector+Plugin) plugin instead.
 
