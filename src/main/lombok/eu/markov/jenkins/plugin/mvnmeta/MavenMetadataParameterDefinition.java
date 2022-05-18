@@ -65,6 +65,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jenkinsci.Symbol;
 import org.jvnet.localizer.ResourceBundleHolder;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
@@ -465,6 +466,7 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
   }
 
   @Extension
+  @Symbol("mavenMetadataVersions")
   public static class DescriptorImpl extends ParameterDescriptor {
 
     public ListBoxModel doFillCredentialsIdItems() {
