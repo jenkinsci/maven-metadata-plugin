@@ -465,7 +465,8 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
     }
   }
 
-  @Extension @Symbol({"mavenMetadataVersions"})
+  @Extension
+  @Symbol("mavenMetadataVersions")
   public static class DescriptorImpl extends ParameterDescriptor {
 
     public ListBoxModel doFillCredentialsIdItems() {
