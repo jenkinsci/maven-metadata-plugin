@@ -101,6 +101,7 @@
         <jenkins.version>2.332.3</jenkins.version>
         <gitHubRepo>jenkinsci/${project.artifactId}</gitHubRepo>
         <lombok.version>1.18.24</lombok.version>
+        <dev.repoBaseUrl>https://repo.jenkins-ci.org/public</dev.repoBaseUrl>
     </properties>
 
     <dependencyManagement>
