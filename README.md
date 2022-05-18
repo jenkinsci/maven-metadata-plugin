@@ -1,5 +1,12 @@
 # Maven Metadata Plugin
 
+## Project Status
+
+This project is looking for maintainers. Our current work and responsibilities don't include this plugin and we not able to properly
+maintain it anymore. If you want to adopt this plugin see https://www.jenkins.io/doc/developer/plugin-governance/adopt-a-plugin/
+
+## About
+
 This plugin adds a new build parameter _List maven artifact versions_. If you select this type and enter a `repositoryURL`,
 `groupId` and `artifactId` the plugin will check for that artifact at the given repository and let whoever started the
 build select a version of the artifact to bind as a build parameter.
