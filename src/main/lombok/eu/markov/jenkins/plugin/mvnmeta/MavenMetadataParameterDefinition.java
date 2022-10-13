@@ -372,13 +372,21 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
 
       input = conn.getInputStream();
 
-      JAXBContext context = JAXBContext.newInstance(MavenMetadataVersions.class);
-      Unmarshaller unmarshaller = context.createUnmarshaller();
-      MavenMetadataVersions metadata = (MavenMetadataVersions) unmarshaller.unmarshal(input);
+      Thread currentThread = Thread.currentThread();
+      ClassLoader originalContext = currentThread.getContextClassLoader();
+      try {
+        currentThread.setContextClassLoader(MavenMetadataParameterDefinition.class.getClassLoader());
+        JAXBContext context = JAXBContext.newInstance(MavenMetadataVersions.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        MavenMetadataVersions metadata = (MavenMetadataVersions) unmarshaller.unmarshal(input);
 
-      if (metadata.versioning.snapshot != null && !StringUtils.isEmpty(metadata.versioning.snapshot.timestamp)) {
-        return version.replaceAll("SNAPSHOT", "") +  metadata.versioning.snapshot.timestamp + "-" + metadata.versioning.snapshot.buildNumber;
+        if (metadata.versioning.snapshot != null && !StringUtils.isEmpty(metadata.versioning.snapshot.timestamp)) {
+          return version.replaceAll("SNAPSHOT", "") +  metadata.versioning.snapshot.timestamp + "-" + metadata.versioning.snapshot.buildNumber;
+        }
+      } finally {
+        currentThread.setContextClassLoader(originalContext);
       }
+
     } catch (Exception e) {
       LOGGER.log(Level.WARNING, "Could not parse maven-metadata.xml", e);
     } finally {
@@ -393,7 +401,6 @@ public class MavenMetadataParameterDefinition extends MavenMetadataParameterDefi
     LOGGER.finest("No match found, using default");
     return version;
   }
-
   private URLConnection prepareConnection(URL url) throws IOException {
     URLConnection conn = url.openConnection();
     if (StringUtils.isNotBlank(url.getUserInfo())) {
